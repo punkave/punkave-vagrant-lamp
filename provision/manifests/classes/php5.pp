@@ -12,31 +12,32 @@ class php5 {
       require => Package['php5-cli']
     }
 
-  # Prepare PEAR
-  file {
-    'pear.tmpdirfix.prepare':
-      ensure  => directory,
-      path    => '/tmp/pear',
-      require => Package['php-pear'];
-    'pear.tmpdirfix':
-      ensure  => directory,
-      path    => '/tmp/pear/cache',
-      mode    => 777,
-      require => File['pear.tmpdirfix.prepare']
-  }
-  # Setup PEAR
-  exec {
-    'pear.upgrade.pear':
-      path => '/bin:/usr/bin:/usr/sbin',
-      command => 'pear upgrade PEAR',
-      require => File['pear.tmpdirfix']
-  }
+  # # Prepare PEAR
+  # file {
+  #   'pear.tmpdirfix.prepare':
+  #     ensure  => directory,
+  #     path    => '/tmp/pear',
+  #     require => Package['php-pear'];
+  #   'pear.tmpdirfix':
+  #     ensure  => directory,
+  #     path    => '/tmp/pear/cache',
+  #     mode    => 777,
+  #     require => File['pear.tmpdirfix.prepare']
+  # }
+  # # Setup PEAR
+  # exec {
+  #   'pear.upgrade.pear':
+  #     path => '/bin:/usr/bin:/usr/sbin',
+  #     command => 'pear upgrade PEAR',
+  #     require => File['pear.tmpdirfix']
+  # }
 
   file { "/etc/php5/apache2/conf.d/optimal.ini":
     mode => 644,
     owner => root,
     group => root,
-    source => "/vagrant/provision/files/php/php.ini"
+    source => "/vagrant/provision/files/php/php.ini",
+    notify  => Service['httpd']
   }
 }
 

@@ -18,9 +18,11 @@ Vagrant.configure("2") do |config|
 
   # The VM - - - - - - - - - - - -
   config.vm.provider :virtualbox do |vb|
-    # Use VBoxManage to customize the VM. For example to change memory:
-    vb.customize ["modifyvm", :id, "--memory", "2048"]
-    vb.customize ["modifyvm", :id, "--cpus", "2"]
+    vb.customize [
+      "modifyvm", :id, 
+      "--memory", "2048",
+      "--cpus", "2"
+    ]
   end
   
   # Provisioning - - - - - - - - - - - -
