@@ -4,7 +4,7 @@ class php5 {
     ['php5-common']:
       ensure => present,
       require => Exec['apt-update'];
-    ['libphp5-embed', 'php5-cli', 'php5-suhosin', 'php5-curl', 'php5-cgi', 'php5-gd', 'php-apc', 'php5-imap', 'php5-intl', 'php5-mcrypt', 'php5-xsl', 'php5-sqlite', 'php-soap', 'php5-xdebug']:
+    ['php5-cli', 'php5-suhosin', 'php5-curl', 'php5-cgi', 'php5-gd', 'php-apc', 'php5-imap', 'php5-intl', 'php5-mcrypt', 'php5-xsl', 'php5-sqlite', 'php-soap', 'php5-xdebug']:
       ensure => present,
       require => Package['php5-common'];
     ['php-pear']:
@@ -30,6 +30,13 @@ class php5 {
       path => '/bin:/usr/bin:/usr/sbin',
       command => 'pear upgrade PEAR',
       require => File['pear.tmpdirfix']
+  }
+
+  file { "/etc/php5/apache2/conf.d/optimal.ini":
+    mode => 644,
+    owner => root,
+    group => root,
+    source => "/vagrant/provision/files/php/php.ini"
   }
 }
 

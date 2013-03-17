@@ -1,6 +1,7 @@
 class utils{
   package { 
-    [ "build-essential", "curl", "tmux", "tcpdump", "telnet", "wget", "git-core", "subversion", "htop", "iotop"]: 
-      ensure => installed
+    [ "curl", "tmux", "screen", "vim", "tcpdump", "telnet", "wget", "git-core", "subversion", "htop", "iotop"]: 
+      ensure => installed,
+      require => Exec['apt-update'];
   }
 }

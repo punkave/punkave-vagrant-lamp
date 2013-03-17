@@ -15,12 +15,13 @@ NameVirtualHost <%= vhost_name %>:<%= port %>
 <%= "  ServerAlias #{serveraliases}" %>
 <% end -%>
   UseCanonicalName Off
-  VirtualDocumentRoot <%= docroot %>/%0
+  VirtualDocumentRoot <%= docroot %>/%0/web
   <Directory <%= docroot %>>
     Options <%= options %>
     AllowOverride <%= Array(override).join(' ') %>
     Order allow,deny
     allow from all
+    DirectoryIndex index.php index.html
   </Directory>
   ErrorLog <%= logroot %>/<%= name %>_error.log
   LogLevel warn
