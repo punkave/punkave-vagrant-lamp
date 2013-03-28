@@ -4,7 +4,6 @@ class utils{
       "curl", 
       "tmux", 
       "screen", 
-      "vim", 
       "tcpdump", 
       "telnet", 
       "wget", 
@@ -13,7 +12,6 @@ class utils{
       "htop", 
       "iotop"
     ]: 
-      ensure => installed,
-      require => Exec['apt-update'];
+      ensure => installed;
   }
 }

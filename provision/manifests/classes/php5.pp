@@ -2,8 +2,7 @@ class php5 {
   # Setup PHP with all the fun stuff
   package {   
     ['php5-common']:
-      ensure => present,
-      require => Exec['apt-update'];
+      ensure => present;
     ['php5-cli', 'php5-suhosin', 'php5-curl', 'php5-cgi', 'php5-gd', 'php-apc', 'php5-imap', 'php5-intl', 'php5-mcrypt', 'php5-xsl', 'php5-sqlite', 'php-soap', 'php5-xdebug']:
       ensure => present,
       require => Package['php5-common'];
@@ -32,12 +31,18 @@ class php5 {
   #     require => File['pear.tmpdirfix']
   # }
 
-  file { "/etc/php5/apache2/conf.d/optimal.ini":
-    mode => 644,
-    owner => root,
-    group => root,
-    source => "/vagrant/provision/files/php/php.ini",
-    notify  => Service['httpd']
+  file { 
+    # This is an attocity byt can't seem to get the conf file to wait until the dir is there
+    ['/etc/php5','/etc/php5/apache2/','/etc/php5/apache2/conf.d/']:
+      ensure => directory;
+    '/etc/php5/apache2/conf.d/optimal.ini':
+      ensure => present,
+      mode => 644,
+      owner => root,
+      group => root,
+      source => '/vagrant/provision/files/php/optimal.ini',
+      require => File['/etc/php5/apache2/conf.d/'],
+      notify  => Service['httpd']
   }
 }
 
