@@ -10,26 +10,35 @@ class php5 {
       ensure => present,
       require => Package['php5-cli']
     }
+  
+  # Setup PEAR
+  Package['php-pear'] -> Exec['pear upgrade pear'] -> File['/tmp/pear/temp'] ->  Exec["pear auto_discover"] 
+    # -> Exec["pear update-channels" ] 
+    -> Exec['pear add channel phpseclib.sourceforge.net'] 
+    -> Exec['pear install Net_SFTP']
 
-  # # Prepare PEAR
-  # file {
-  #   'pear.tmpdirfix.prepare':
-  #     ensure  => directory,
-  #     path    => '/tmp/pear',
-  #     require => Package['php-pear'];
-  #   'pear.tmpdirfix':
-  #     ensure  => directory,
-  #     path    => '/tmp/pear/cache',
-  #     mode    => 777,
-  #     require => File['pear.tmpdirfix.prepare']
-  # }
-  # # Setup PEAR
-  # exec {
-  #   'pear.upgrade.pear':
-  #     path => '/bin:/usr/bin:/usr/sbin',
-  #     command => 'pear upgrade PEAR',
-  #     require => File['pear.tmpdirfix']
-  # }
+  file { "/tmp/pear/temp":
+    ensure => "directory",
+    owner => "root",
+    group => "root",
+    mode => 777
+  }
+
+  exec {
+    'pear upgrade pear':
+      command => 'pear upgrade PEAR',
+      returns => [ 0, '', ' '];
+    "pear auto_discover" :
+      command => "/usr/bin/pear config-set auto_discover 1";
+    # "pear update-channels" :
+    #   command => "/usr/bin/pear update-channels";
+    'pear add channel phpseclib.sourceforge.net':
+      command => 'pear channel-discover phpseclib.sourceforge.net',
+      unless => 'pear list-channels | grep phpseclib.sourceforge.net';
+    'pear install Net_SFTP':
+      command => 'pear install phpseclib/Net_SFTP',
+      unless=> 'pear list -a | grep Net_SFTP';
+  }
 
   file { 
     # This is an attocity byt can't seem to get the conf file to wait until the dir is there
@@ -45,9 +54,3 @@ class php5 {
       notify  => Service['httpd']
   }
 }
-
-# git-core mod_fastcgi mysql5-server 
-# 
-# php5-apc php5-curl php5-exif php5-gd php5-iconv php5-posix php5-imap php5-intl php5-mbstring php5-mcrypt php5-mysql php5-openssl php5-soap php5-xsl php5-mongo php5-sqlite 
-
-# unrar wget mongodb sqlite3 nodejs npm redis
