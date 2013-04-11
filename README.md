@@ -16,6 +16,10 @@ This project aims to have an isolated, repeated and disposable development envir
 * The latest Vagrant and Virtual Box is installed
 * That your projects are standard symfony sites and that the files are in `~/www`. *For example: `~/www/waytohealth/web`*
 
+### Gotchyas
+
+* I can't seem to get custom private keys to work. You'll need to setup your private key and sshconfig on your own
+
 ## Technical Specs
 
 * A VM with 2 CPUs, 4GB of ram and 80GB HD
