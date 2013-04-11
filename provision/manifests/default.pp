@@ -1,22 +1,25 @@
+# Imports
 import "classes/*.pp"
 
-class { 'apt':
-  always_apt_update    => true
-}
+# Some smart defaults
+Exec { path => [ "/bin/", "/sbin/" , "/usr/bin/", "/usr/sbin/" ] }
 
-exec { "apt-update":
-    command => "/usr/bin/apt-get update"
-}
+# Hacks to make sure apt update runs before any package is installed
+class { 'apt': always_apt_update    => true }
+exec { "apt-update": command => "/usr/bin/apt-get update" }
 Exec["apt-update"] -> Package <| |>
 
+# Load useful utilities
 class {'utils':}
-
-class {'php5':}
-
 package { "vim": ensure => installed; }
+
+# Load php settings
+class {'php5':}
 
 #                 Mysql 
 # - - - - - - - - - - - - - - - - - - - - - - -
+# Class['mysql::server'] -> Database_user['root@localhost'] -> Database_user['root@%'] -> Database_grant['root@%']
+
 class { 'mysql::php': }
 class { 'mysql::server':
   config_hash => { 
@@ -25,17 +28,22 @@ class { 'mysql::server':
   }
 }
 
-# This took a while to figure out. http://stackoverflow.com/a/1559992/109589
+# # Make sure root can connect from another server
+# # This took a while to figure out. http://stackoverflow.com/a/1559992/109589
 database_user { 'root@localhost':
-  password_hash => mysql_password('root')
+  password_hash => mysql_password('root'),
+  require => [Class['mysql::server'], Exec['set_mysql_rootpw']];
 }
 database_user { 'root@%':
-  password_hash => mysql_password('root')
+  password_hash => mysql_password('root'),
+  require => Database_user['root@localhost'] ;
 }
 database_grant { 'root@%':
-  privileges => ['all']
+  privileges => ['all'],
+  require => Database_user['root@%'] ;
 }
 
+# LIGHTING
 mysql::server::config { 'performance_tuning':
     settings => {
       'mysqld' => {
