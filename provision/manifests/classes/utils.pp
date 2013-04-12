@@ -1,7 +1,6 @@
 class utils{
   package { 
     [ 
-      "curl", 
       "tmux", 
       "screen", 
       "tcpdump", 
