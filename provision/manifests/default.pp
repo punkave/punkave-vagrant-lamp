@@ -54,10 +54,11 @@ mysql::server::config { 'performance_tuning':
       'mysqld' => {
         'query_cache_limit'             => '8M',
         'query_cache_size'              => '256M',
+        'log_slow_queries '             => true,
         'slow_query_log '               => '/var/log/mysql/mysql-slow.log',
         'long_query_time '              => '10',
         'log-queries-not-using-indexes' => true,
-        'wait_timeout'                  => '60',
+        'wait_timeout'                  => '1800',
         'connect_timeout'               => '10',    #Increase connect_timeout from 5 to 10',
         'interactive_timeout'           => '120',   #Decrease interactive_timeout from 28800 to 120',
         'innodb_buffer_pool_size '      => '128M',

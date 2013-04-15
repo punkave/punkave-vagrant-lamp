@@ -15,7 +15,7 @@ class php5 {
     -> Exec['pear add channel phpseclib.sourceforge.net'] 
     -> Exec['pear install Net_SFTP']
 
-  file { "/tmp/pear/temp":
+  file { ["/tmp/pear","/tmp/pear/temp"]:
     ensure => "directory",
     owner => "root",
     group => "root",
