@@ -18,13 +18,13 @@ Vagrant.configure("2") do |config|
   config.vm.network :private_network, ip: "192.168.33.10"
 
   # The Folders - - - - - - - - - - - -
-  config.vm.synced_folder "../../www", "/var/www", :nfs => true
+  config.vm.synced_folder "~/www", "/var/www", :nfs => true
 
   # The VM - - - - - - - - - - - -
   config.vm.provider :virtualbox do |vb|
     vb.customize [
       "modifyvm", :id, 
-      "--memory", "12288",
+      "--memory", "8192",
       "--cpus", "2"
     ]
   end
