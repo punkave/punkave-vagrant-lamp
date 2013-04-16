@@ -10,10 +10,6 @@ exec { "apt-update": command => "/usr/bin/apt-get update" }
 Exec["apt-update"] -> Package <| |>
 
 
-# Disable AppArmor
-# sudo update-rc.d -f apparmor remove
-
-
 # Load useful utilities
 class {'utils':}
 package { "vim": ensure => installed; }
