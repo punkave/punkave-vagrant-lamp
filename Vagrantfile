@@ -19,6 +19,7 @@ Vagrant.configure("2") do |config|
 
   # The Folders - - - - - - - - - - - -
   config.vm.synced_folder "~/www", "/var/www", :nfs => true
+  config.vm.synced_folder "~/src", "/home/vagrant/src", :nfs => true
 
   # The VM - - - - - - - - - - - -
   config.vm.provider :virtualbox do |vb|
