@@ -23,4 +23,4 @@ This project aims to have an isolated, repeated and disposable development envir
 ## Technical Specs
 
 * A VM with 2 CPUs, 4GB of ram and 80GB HD
-* PHP, Apache and mysql optimally configured. See [the default manifest](/punkave/punkave-vagrant-lamp/blob/master/provision/manifests/default.pp) for more details
+* PHP, Apache and mysql optimally configured. See [the default manifest](https://github.com/punkave/punkave-vagrant-lamp/blob/master/provision/manifests/default.pp) for more details
